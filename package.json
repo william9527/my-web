@@ -3,8 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "latest",
+    "@material-ui/icons": "latest",
+    "clsx": "latest",
+    "immutable": "^4.0.0-rc.12",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.1.0",
+    "react-router-dom": "^5.0.1",
+    "react-safe-html": "^0.6.1",
+    "redux": "^4.0.4",
+    "redux-actions": "^2.6.5",
+    "redux-immutable": "^4.0.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
+    "validator": "^11.1.0",
+    "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
     "react-scripts": "3.0.1"
