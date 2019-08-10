@@ -4,27 +4,87 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Link from '@material-ui/core/Link';
 import ProTip from './ProTip';
-import Signin from './SignIn';
+import Signin from './components/SignIn';
+import Dashboard from './components/dashboard/Dashboard';
 
-function MadeWithLove() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Built with love by the '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Material-UI
-      </Link>
-      {' team.'}
-    </Typography>
-  );
+import { connect } from 'react-redux'
+import { ThemeProvider } from '@material-ui/styles';
+import { createMuiTheme } from '@material-ui/core/styles'
+import { blue, indigo } from '@material-ui/core/colors'
+import SignInContainer from './containers/SignInContainer'
+import { Component } from 'react'
+
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route, matchPath
+} from 'react-router-dom'
+
+
+
+function mapStateToProps (state, ownProps) {
+  return {
+      status: state.getIn(['data','status'])
+  };
 }
 
-export default function App() {
-  return (
-    <Container maxWidth="sm">
-      <Box my={4}>
-        
-        <Signin />
-      </Box>
-    </Container>
-  );
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  
+})
+
+
+const theme = createMuiTheme({
+  palette: {
+    secondary: {
+      main: blue[900]
+    },
+    primary: {
+      main: indigo[700]
+    }
+  },
+  typography: {
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      '"Lato"',
+      'sans-serif'
+    ].join(',')
+  }
+});
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    props.status === 'login'
+      ? <Component {...props} />
+      : <Redirect to={{
+          pathname: '/',
+          state: { from: props.location }
+        }} />
+  )} />
+)
+
+
+
+class AppComponent extends Component  {
+
+  render(){
+      return (         
+        <div>
+        <ThemeProvider theme={theme}>
+          <Router>
+
+                <Route exact path="/"  component={this.props.status==='login'?Dashboard:SignInContainer} />
+
+        </Router>
+        </ThemeProvider>
+      </div>
+           
+      );
+  }
 }
+
+const App = connect(
+mapStateToProps,
+mapDispatchToProps
+)(AppComponent)
+
+export default App;

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "latest",
+    "@material-ui/core": "^4.3.1",
     "@material-ui/icons": "latest",
     "clsx": "latest",
     "immutable": "^4.0.0-rc.12",
@@ -12,6 +12,7 @@
     "react-redux": "^7.1.0",
     "react-router-dom": "^5.0.1",
     "react-safe-html": "^0.6.1",
+    "recharts": "^1.7.0",
     "redux": "^4.0.4",
     "redux-actions": "^2.6.5",
     "redux-immutable": "^4.0.0",
@@ -21,7 +22,8 @@
     "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "redux-devtools-extension": "^2.13.8"
   },
   "scripts": {
     "start": "react-scripts start",
