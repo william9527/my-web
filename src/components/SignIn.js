@@ -3,19 +3,16 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { Component } from 'react';
+import { withStyles } from '@material-ui/core/styles';
+import theme from '../theme';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
-const useStyles = makeStyles(theme => ({
+const useStyles = {
   '@global': {
     body: {
       backgroundColor: theme.palette.common.white,
@@ -38,41 +35,49 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-}));
+  progress: {
+    margin: theme.spacing(2),
+  },
+};
+
+class SignIn extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+
+    };
+  }
 
 
 
-export default class SignIn extends Component {
-
-
-
-  onUpdateUsername = (e) =>{
-    this.setState({username: e.target.value});
-    console.log(e.target.value);
+  onUpdateUsername = (e) => {
+    this.setState({ username: e.target.value });
   };
-  
-  onUpdatePassword = (e) =>{
-    this.setState({password: e.target.value});
-    console.log(e.target.value);
+
+  onUpdatePassword = (e) => {
+    this.setState({ password: e.target.value });
   };
 
-  onSubmit = (e) =>{
+  onSubmit = (e) => {
+    this.setState({ status: 'waiting' });
     this.props.onLogin(this.state.username, this.state.password);
   }
 
-  render(){
+  render() {
+    const { classes } = this.props;
+
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div className={useStyles.paper}>
-          <Avatar className={useStyles.avatar}>
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <form className={useStyles.form} noValidate>
-            <TextField
+          <form className={classes.form} noValidate>
+            {(this.props.status === "login_failed") ? <TextField
               variant="outlined"
               margin="normal"
               required
@@ -81,52 +86,73 @@ export default class SignIn extends Component {
               label="Username"
               name="username"
               autoComplete="username"
-              onChange = {this.onUpdateUsername}
+              onChange={this.onUpdateUsername}
               autoFocus
+              error
             />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              onChange = {this.onUpdatePassword}
+              :
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                onChange={this.onUpdateUsername}
+                autoFocus
+              />
+            }
+            {(this.props.status === "login_failed") ?
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                onChange={this.onUpdatePassword}
+                autoComplete="current-password"
+                error
+                helperText='Login Failed'
+              /> :
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                onChange={this.onUpdatePassword}
+                autoComplete="current-password"
+              />
+            }
 
-              autoComplete="current-password"
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
+            {(this.props.status === 'waiting') &&
+              <div style={{ textAlign: 'center' }}><CircularProgress className={classes.progress}/></div>
+            }
+
             <Button
               fullWidth
               variant="contained"
               color="primary"
               onClick={this.onSubmit}
-              className={useStyles.submit}
+              className={classes.submit}
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </form>
         </div>
-        
+
       </Container>
     );
   }
-  
+
 }
+
+export default withStyles(useStyles)(SignIn);
